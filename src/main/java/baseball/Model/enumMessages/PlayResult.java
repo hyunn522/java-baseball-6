@@ -5,9 +5,13 @@ public enum PlayResult {
     BALL("볼"),
     STRIKE("스트라이크");
 
-    private String result;
+    private final String result;
 
     PlayResult(String result) {
         this.result = result;
+    }
+
+    public String getResult() {
+        return this.result;
     }
 }
