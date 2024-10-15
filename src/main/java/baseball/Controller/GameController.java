@@ -1,6 +1,6 @@
 package baseball.Controller;
 
-import baseball.Model.GameNum;
+import baseball.Model.Game;
 import baseball.Service.GameService;
 import baseball.View.PlayView;
 import baseball.View.StartView;
@@ -17,7 +17,7 @@ public class GameController {
     }
 
     private static void startGame() {
-        GameNum answerNum = gameService.createGame();
-        GameNum userNum = new GameNum(PlayView.printInputView());
+        Game answer = gameService.createGame();
+        Game user = new Game(PlayView.printInputView());
     }
 }
