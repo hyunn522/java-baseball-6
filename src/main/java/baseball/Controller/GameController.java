@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class GameController {
     static boolean isGameEnd = false;
+    static boolean isCorrect = false;
     static GameService gameService = new GameService();
 
     public static void runGame() {
@@ -20,16 +21,20 @@ public class GameController {
 
     private static void startGame() {
         Game answer = gameService.createGame();
+        isCorrect = false;
 
-        boolean isCorrect = false;
         while (!isCorrect) {
             Game user = new Game(PlayView.printInputView());
-            isCorrect = playGame(user, answer);
+            playGame(user, answer);
         }
     }
 
-    private static boolean playGame(Game user, Game answer) {
+    private static void playGame(Game user, Game answer) {
         ArrayList<Integer> compareResult = gameService.compareNums(user, answer);
+        generateResult(compareResult);
+    }
+
+    private static void generateResult(ArrayList<Integer> compareResult) {
         int ballCount = compareResult.get(0);
         int strikeCount = compareResult.get(1);
 
@@ -45,12 +50,15 @@ public class GameController {
             PlayView.printBallAndStrikeView(ballCount, strikeCount);
         }
 
+        finishGame(strikeCount);
+    }
+
+    private static void finishGame(int strikeCount) {
         if (strikeCount == 3) {
             int userEndInput = EndView.CorrectView();
             isGameEnd = userEndInput == 2;
-            return true;
-        } else {
-            return false;
+            isCorrect = true;
         }
     }
+
 }
