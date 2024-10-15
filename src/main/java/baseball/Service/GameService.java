@@ -25,12 +25,13 @@ public class GameService {
                 }
             }
         }
+        
         return randomList;
     }
 
     public ArrayList<Integer> compareNums(Game user, Game answer) {
-        int strikeCount = 0;
         int ballCount = 0;
+        int strikeCount = 0;
 
         List<Integer> userNum = user.getGameNum();
         List<Integer> answerNum = answer.getGameNum();
@@ -45,7 +46,7 @@ public class GameService {
             }
         }
 
-        return new ArrayList<>(Arrays.asList(strikeCount, ballCount));
+        return new ArrayList<>(Arrays.asList(ballCount, strikeCount));
     }
-    
+
 }
