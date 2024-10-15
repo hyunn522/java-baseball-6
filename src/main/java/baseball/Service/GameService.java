@@ -2,17 +2,18 @@ package baseball.Service;
 
 import static camp.nextstep.edu.missionutils.Randoms.pickNumberInRange;
 
-import baseball.Model.GameNum;
+import baseball.Model.Game;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameService {
 
-    public GameNum createGame() {
-        return new GameNum(generateRandomNum());
+    public Game createGame() {
+        return new Game(generateRandomNum());
     }
 
-    public static List<Integer> generateRandomNum() {
+    public static ArrayList<Integer> generateRandomNum() {
         ArrayList<Integer> randomList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
@@ -26,4 +27,25 @@ public class GameService {
         }
         return randomList;
     }
+
+    public ArrayList<Integer> compareNums(Game user, Game answer) {
+        int strikeCount = 0;
+        int ballCount = 0;
+
+        List<Integer> userNum = user.getGameNum();
+        List<Integer> answerNum = answer.getGameNum();
+
+        for (int i = 0; i < 3; i++) {
+            if (userNum.get(i) - answerNum.get(i) == 0) {
+                strikeCount++;
+            } else {
+                if (answerNum.contains(userNum.get(i))) {
+                    ballCount++;
+                }
+            }
+        }
+
+        return new ArrayList<>(Arrays.asList(strikeCount, ballCount));
+    }
+    
 }
