@@ -2,6 +2,7 @@ package baseball.View;
 
 import static baseball.Model.enumMessages.PlayResult.BALL;
 import static baseball.Model.enumMessages.PlayResult.NOTHING;
+import static baseball.Model.enumMessages.PlayResult.SEPERATOR;
 import static baseball.Model.enumMessages.PlayResult.STRIKE;
 import static baseball.Model.enumMessages.UserMessage.INPUT_MESSAGE;
 
@@ -25,7 +26,7 @@ public class PlayView {
 
     public static void printBallAndStrikeView(int ballCount, int strikeCount) {
         System.out.println(
-                ballCount + BALL.getResult() + " " + strikeCount + STRIKE.getResult());
+                ballCount + BALL.getResult() + SEPERATOR.getResult() + strikeCount + STRIKE.getResult());
     }
 
     public static void printNothingView() {

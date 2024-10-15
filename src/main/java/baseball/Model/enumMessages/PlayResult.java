@@ -3,7 +3,8 @@ package baseball.Model.enumMessages;
 public enum PlayResult {
     NOTHING("낫싱"),
     BALL("볼"),
-    STRIKE("스트라이크");
+    STRIKE("스트라이크"),
+    SEPERATOR(" ");
 
     private final String result;
 
