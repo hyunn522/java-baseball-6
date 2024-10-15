@@ -6,6 +6,7 @@ import baseball.View.StartView;
 
 public class GameController {
     static boolean isGameEnd = false;
+    static GameService gameService = new GameService();
 
     public static void runGame() {
         StartView.printStartView();
@@ -15,7 +16,6 @@ public class GameController {
     }
 
     private static void startGame() {
-        GameService gameService = new GameService();
         GameNum answerNum = gameService.createGame();
     }
 }
