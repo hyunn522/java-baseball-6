@@ -1,5 +1,8 @@
 package baseball.Model;
 
+import static baseball.Model.enumMessages.ErrorMessage.INPUT_DUPLICATE;
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_SIGN;
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_TYPE;
 import static camp.nextstep.edu.missionutils.Randoms.pickNumberInRange;
 
 import java.util.ArrayList;
@@ -34,5 +37,42 @@ public class Game {
         }
 
         return new Game(randomList);
+    }
+
+    public static Game generateUserGame(char[] userInput) {
+        ArrayList<Integer> userInputList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            validateZero(userInput[i]);
+
+            if (validateNumber(userInput[i], userInputList)) {
+                continue;
+            }
+
+            throw new IllegalArgumentException(INVALID_INPUT_TYPE.getMessage());
+        }
+
+        return new Game(userInputList);
+    }
+
+    private static void validateZero(char c) {
+        if (c == '0') {
+            throw new IllegalArgumentException(INVALID_INPUT_SIGN.getMessage());
+        }
+    }
+
+    private static boolean validateNumber(char c, ArrayList<Integer> userInputList) {
+        if (c >= '0' && c <= '9') {
+            validateDuplicate(c, userInputList);
+            userInputList.add(Integer.parseInt(String.valueOf(c)));
+            return true;
+        }
+        return false;
+    }
+
+    private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
+        if (userInputList.contains(c - '0')) {
+            throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package baseball.Service;
 
 import baseball.Model.Game;
+import baseball.View.PlayView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,25 @@ public class GameService {
         }
 
         return new ArrayList<>(Arrays.asList(ballCount, strikeCount));
+    }
+
+    public int generateResult(ArrayList<Integer> compareResult) {
+        int ballCount = compareResult.get(0);
+        int strikeCount = compareResult.get(1);
+
+        if (strikeCount == 0 && ballCount == 0) {
+            PlayView.printNothingView();
+        } else if (strikeCount == 3) {
+            PlayView.printStrikeView(strikeCount);
+        } else if (strikeCount == 0) {
+            PlayView.printBallView(ballCount);
+        } else if (ballCount == 0) {
+            PlayView.printStrikeView(strikeCount);
+        } else {
+            PlayView.printBallAndStrikeView(ballCount, strikeCount);
+        }
+
+        return strikeCount;
     }
 
 }

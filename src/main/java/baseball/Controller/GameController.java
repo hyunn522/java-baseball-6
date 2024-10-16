@@ -1,9 +1,7 @@
 package baseball.Controller;
 
-import static baseball.Model.enumMessages.ErrorMessage.INPUT_DUPLICATE;
+import static baseball.Model.Game.generateUserGame;
 import static baseball.Model.enumMessages.ErrorMessage.INVALID_END_INPUT;
-import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_SIGN;
-import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_TYPE;
 
 import baseball.Model.Game;
 import baseball.Service.GameService;
@@ -11,7 +9,6 @@ import baseball.View.EndView;
 import baseball.View.PlayView;
 import baseball.View.StartView;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class GameController {
@@ -36,80 +33,26 @@ public class GameController {
 
         while (!isCorrect) {
             userInput = PlayView.printInputView();
-            Game user = new Game(generateUserNum(userInput));
+            Game user = generateUserGame(userInput);
             playGame(user, answer);
         }
     }
 
-    private static List<Integer> generateUserNum(char[] userInput) {
-        ArrayList<Integer> userInputList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            validateZero(userInput[i]);
-
-            if (validateNumber(userInput[i], userInputList)) {
-                continue;
-            }
-
-            throw new IllegalArgumentException(INVALID_INPUT_TYPE.getMessage());
-        }
-
-        return userInputList;
-    }
 
     private static void playGame(Game user, Game answer) {
         ArrayList<Integer> compareResult = gameService.compareNums(user, answer);
-        generateResult(compareResult);
-    }
-
-    private static void generateResult(ArrayList<Integer> compareResult) {
-        int ballCount = compareResult.get(0);
-        int strikeCount = compareResult.get(1);
-
-        if (strikeCount == 0 && ballCount == 0) {
-            PlayView.printNothingView();
-        } else if (strikeCount == 3) {
-            PlayView.printStrikeView(strikeCount);
-        } else if (strikeCount == 0) {
-            PlayView.printBallView(ballCount);
-        } else if (ballCount == 0) {
-            PlayView.printStrikeView(strikeCount);
-        } else {
-            PlayView.printBallAndStrikeView(ballCount, strikeCount);
-        }
-
-        finishGame(strikeCount);
-    }
-
-    private static void finishGame(int strikeCount) {
+        int strikeCount = gameService.generateResult(compareResult);
         if (strikeCount == 3) {
-            String userEndInput = EndView.CorrectView();
-            validateEndNumber(userEndInput);
-
-            isGameEnd = Objects.equals(userEndInput, "2");
-            isCorrect = true;
+            finishGame();
         }
     }
 
-    private static void validateZero(char c) {
-        if (c == '0') {
-            throw new IllegalArgumentException(INVALID_INPUT_SIGN.getMessage());
-        }
-    }
+    private static void finishGame() {
+        String userEndInput = EndView.CorrectView();
+        validateEndNumber(userEndInput);
 
-    private static boolean validateNumber(char c, ArrayList<Integer> userInputList) {
-        if (c >= '0' && c <= '9') {
-            validateDuplicate(c, userInputList);
-            userInputList.add(Integer.parseInt(String.valueOf(c)));
-            return true;
-        }
-        return false;
-    }
-
-    private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
-        if (userInputList.contains(c - '0')) {
-            throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
-        }
+        isGameEnd = Objects.equals(userEndInput, "2");
+        isCorrect = true;
     }
 
     private static void validateEndNumber(String userEndInput) {
