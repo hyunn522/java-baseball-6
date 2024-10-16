@@ -1,6 +1,7 @@
 package baseball.Controller;
 
 import static baseball.Model.enumMessages.ErrorMessage.INPUT_DUPLICATE;
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_END_INPUT;
 import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_SIGN;
 import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_TYPE;
 
@@ -51,27 +52,6 @@ public class GameController {
         return userInputList;
     }
 
-    private static void validateZero(char c) {
-        if (c == '0') {
-            throw new IllegalArgumentException(INVALID_INPUT_SIGN.getMessage());
-        }
-    }
-
-    private static boolean validateNumber(char c, ArrayList<Integer> userInputList) {
-        if (c >= '0' && c <= '9') {
-            validateDuplicate(c, userInputList);
-            userInputList.add(Integer.parseInt(String.valueOf(c)));
-            return true;
-        }
-        return false;
-    }
-
-    private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
-        if (userInputList.contains(c - '0')) {
-            throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
-        }
-    }
-
     private static void playGame(Game user, Game answer) {
         ArrayList<Integer> compareResult = gameService.compareNums(user, answer);
         generateResult(compareResult);
@@ -99,9 +79,37 @@ public class GameController {
     private static void finishGame(int strikeCount) {
         if (strikeCount == 3) {
             int userEndInput = EndView.CorrectView();
+            validateEndNumber(userEndInput);
+            
             isGameEnd = userEndInput == 2;
             isCorrect = true;
         }
     }
 
+    private static void validateEndNumber(int userEndInput) {
+        if (userEndInput != '1' && userEndInput != '2') {
+            throw new IllegalArgumentException(INVALID_END_INPUT.getMessage());
+        }
+    }
+
+    private static void validateZero(char c) {
+        if (c == '0') {
+            throw new IllegalArgumentException(INVALID_INPUT_SIGN.getMessage());
+        }
+    }
+
+    private static boolean validateNumber(char c, ArrayList<Integer> userInputList) {
+        if (c >= '0' && c <= '9') {
+            validateDuplicate(c, userInputList);
+            userInputList.add(Integer.parseInt(String.valueOf(c)));
+            return true;
+        }
+        return false;
+    }
+
+    private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
+        if (userInputList.contains(c - '0')) {
+            throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
+        }
+    }
 }
