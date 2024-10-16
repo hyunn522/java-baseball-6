@@ -1,5 +1,6 @@
 package baseball.View;
 
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_LENGTH;
 import static baseball.Model.enumMessages.PlayResult.BALL;
 import static baseball.Model.enumMessages.PlayResult.NOTHING;
 import static baseball.Model.enumMessages.PlayResult.SEPERATOR;
@@ -7,21 +8,18 @@ import static baseball.Model.enumMessages.PlayResult.STRIKE;
 import static baseball.Model.enumMessages.UserMessage.INPUT_MESSAGE;
 
 import camp.nextstep.edu.missionutils.Console;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayView {
 
-    public static List<Integer> printInputView() {
+    public static char[] printInputView() {
         System.out.print(INPUT_MESSAGE.getMessage());
-        char[] userInput = Console.readLine().toCharArray();
-        ArrayList<Integer> userInputList = new ArrayList<>();
+        char[] input = Console.readLine().toCharArray();
 
-        userInputList.add(Integer.parseInt(String.valueOf(userInput[0])));
-        userInputList.add(Integer.parseInt(String.valueOf(userInput[1])));
-        userInputList.add(Integer.parseInt(String.valueOf(userInput[2])));
-
-        return userInputList;
+        if (input.length != 3) {
+            throw new IllegalArgumentException(INVALID_INPUT_LENGTH.getMessage());
+        }
+        
+        return input;
     }
 
     public static void printBallAndStrikeView(int ballCount, int strikeCount) {

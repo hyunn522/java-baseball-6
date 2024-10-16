@@ -6,6 +6,7 @@ import baseball.View.EndView;
 import baseball.View.PlayView;
 import baseball.View.StartView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
     static boolean isGameEnd = false;
@@ -24,9 +25,20 @@ public class GameController {
         isCorrect = false;
 
         while (!isCorrect) {
-            Game user = new Game(PlayView.printInputView());
+            char[] userInput = PlayView.printInputView();
+            Game user = new Game(generateUserNum(userInput));
             playGame(user, answer);
         }
+    }
+
+    private static List<Integer> generateUserNum(char[] userInput) {
+        ArrayList<Integer> userInputList = new ArrayList<>();
+        
+        for (int i = 0; i < 3; i++) {
+            userInputList.add(Integer.parseInt(String.valueOf(userInput[i])));
+        }
+
+        return userInputList;
     }
 
     private static void playGame(Game user, Game answer) {
