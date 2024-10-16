@@ -7,9 +7,9 @@ import camp.nextstep.edu.missionutils.Console;
 
 public class EndView {
 
-    public static int CorrectView() {
+    public static String CorrectView() {
         System.out.println(END_MESSAGE.getMessage());
         System.out.println(RESTART_MESSAGE.getMessage());
-        return Integer.parseInt(Console.readLine());
+        return Console.readLine();
     }
 }

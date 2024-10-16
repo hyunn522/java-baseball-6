@@ -12,11 +12,14 @@ import baseball.View.PlayView;
 import baseball.View.StartView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameController {
     static boolean isGameEnd = false;
     static boolean isCorrect = false;
     static GameService gameService = new GameService();
+
+    static char[] userInput;
 
     public static void runGame() {
         StartView.printStartView();
@@ -30,7 +33,7 @@ public class GameController {
         isCorrect = false;
 
         while (!isCorrect) {
-            char[] userInput = PlayView.printInputView();
+            userInput = PlayView.printInputView();
             Game user = new Game(generateUserNum(userInput));
             playGame(user, answer);
         }
@@ -78,17 +81,11 @@ public class GameController {
 
     private static void finishGame(int strikeCount) {
         if (strikeCount == 3) {
-            int userEndInput = EndView.CorrectView();
+            String userEndInput = EndView.CorrectView();
             validateEndNumber(userEndInput);
-            
-            isGameEnd = userEndInput == 2;
-            isCorrect = true;
-        }
-    }
 
-    private static void validateEndNumber(int userEndInput) {
-        if (userEndInput != '1' && userEndInput != '2') {
-            throw new IllegalArgumentException(INVALID_END_INPUT.getMessage());
+            isGameEnd = Objects.equals(userEndInput, "2");
+            isCorrect = true;
         }
     }
 
@@ -110,6 +107,12 @@ public class GameController {
     private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
         if (userInputList.contains(c - '0')) {
             throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
+        }
+    }
+
+    private static void validateEndNumber(String userEndInput) {
+        if (!Objects.equals(userEndInput, "1") && !Objects.equals(userEndInput, "2")) {
+            throw new IllegalArgumentException(INVALID_END_INPUT.getMessage());
         }
     }
 }
