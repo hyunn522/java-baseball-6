@@ -1,5 +1,9 @@
 package baseball.Controller;
 
+import static baseball.Model.enumMessages.ErrorMessage.INPUT_DUPLICATE;
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_SIGN;
+import static baseball.Model.enumMessages.ErrorMessage.INVALID_INPUT_TYPE;
+
 import baseball.Model.Game;
 import baseball.Service.GameService;
 import baseball.View.EndView;
@@ -33,12 +37,39 @@ public class GameController {
 
     private static List<Integer> generateUserNum(char[] userInput) {
         ArrayList<Integer> userInputList = new ArrayList<>();
-        
+
         for (int i = 0; i < 3; i++) {
-            userInputList.add(Integer.parseInt(String.valueOf(userInput[i])));
+            validateZero(userInput[i]);
+
+            if (validateNumber(userInput[i], userInputList)) {
+                continue;
+            }
+
+            throw new IllegalArgumentException(INVALID_INPUT_TYPE.getMessage());
         }
 
         return userInputList;
+    }
+
+    private static void validateZero(char c) {
+        if (c == '0') {
+            throw new IllegalArgumentException(INVALID_INPUT_SIGN.getMessage());
+        }
+    }
+
+    private static boolean validateNumber(char c, ArrayList<Integer> userInputList) {
+        if (c >= '0' && c <= '9') {
+            validateDuplicate(c, userInputList);
+            userInputList.add(Integer.parseInt(String.valueOf(c)));
+            return true;
+        }
+        return false;
+    }
+
+    private static void validateDuplicate(char c, ArrayList<Integer> userInputList) {
+        if (userInputList.contains(c - '0')) {
+            throw new IllegalArgumentException(INPUT_DUPLICATE.getMessage());
+        }
     }
 
     private static void playGame(Game user, Game answer) {
