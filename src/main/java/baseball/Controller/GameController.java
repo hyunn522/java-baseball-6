@@ -15,14 +15,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class GameController {
-    static boolean isGameEnd = false;
-    static boolean isCorrect = false;
+    static boolean isGameEnd;
+    static boolean isCorrect;
     static GameService gameService = new GameService();
 
     static char[] userInput;
 
     public static void runGame() {
         StartView.printStartView();
+        isGameEnd = false;
+
         while (!isGameEnd) {
             startGame();
         }
